@@ -19,7 +19,7 @@ fetch("http://localhost:3000/api/products")
 
   function lesKanaps(product) {
 
-        let affichage = document.querySelector("#item") ;
+        let item = document.querySelector("#item") ;
         let imageAlt = document.querySelector("article div.item__img")
         let titre = document.querySelector("#title")
         let description = document.querySelector("#description")
