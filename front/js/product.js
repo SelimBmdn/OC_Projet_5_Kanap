@@ -24,7 +24,7 @@ fetch("http://localhost:3000/api/products")
         let titre = document.querySelector("#title")
         let description = document.querySelector("#description")
         let prix = document.querySelector("#price")
-        /* let color = document.querySelector("#colors") */
+        let couleurOption = document.querySelector("#colors") 
 
     for (let article of product) {
 
@@ -37,8 +37,14 @@ fetch("http://localhost:3000/api/products")
             prix.textContent = `${article.price}`;
 
             description.textContent = `${article.description}`;
+
+            for (let couleur of article.colors) {
+                
+                couleurOption.innerHTML += `<option value="${couleur}">${couleur}</option>`;
+              }
          
           }
+
         }
         console.log("affichage ok");
         }
