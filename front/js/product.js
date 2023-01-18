@@ -16,6 +16,10 @@ fetch("http://localhost:3000/api/products")
     });
 
 
+let articleClient = {}; // Initialisation de la variable articleclient
+// id du produit
+articleClient._id = id; // Affectation de l'id à la propriété de la variable id de articleClient
+
 
 function lesKanaps(product) {
 
@@ -46,51 +50,59 @@ function lesKanaps(product) {
     console.log("affichage ok");
 }
 
-/*
+// ajout dans panier choix quantité et couleur
 
-// ajout panier par le "click"
-
-let choixProduit = document.querySelector("#addToCart");
-let choixQuantité = document.querySelector("quantity");
+let choixQuantité = document.querySelector('input[id="quantity"]');
 let quantitéProduit;
 
-choixQuantité.addEventListener("input", () => {
+choixQuantité.addEventListener("input", (eq) => {
 
-
-    articleClient.quantité = quantitéProduit;
-
-    document.querySelector("addToCard").style.colors = "white";
-    document.querySelector("addToCard").textContent = "Ajouter au panier";
-
+    quantitéProduit = eq.target.value;
+    articleClient.quantity = quantitéProduit;
+    document.querySelector("#addToCart").style.colors = "white";
+    document.querySelector("#addToCart").textContent = "Ajouter au panier";
+    console.log(quantitéProduit);
 })
+
+let choixCouleur = document.querySelector("#colors");
+
+choixCouleur.addEventListener("input", (ec) => {
+    let couleurProduit;
+    // on récupère la valeur de la cible de l'évenement dans couleur
+    couleurProduit = ec.target.value;
+    // on ajoute la couleur à l'objet panierClient
+    articleClient.couleur = couleurProduit;
+    //ça reset la couleur et le texte du bouton si il y a une action sur les inputs dans le cas d'une autre commande du même produit
+    document.querySelector("#addToCart").style.color = "white";
+    document.querySelector("#addToCart").textContent = "Ajouter au panier";
+    console.log(couleurProduit);
+});
+
+let choixProduit = document.querySelector("#addToCart");
 
 choixProduit.addEventListener("click", () => {
     //conditions de validation du bouton ajouter au panier
     if (
-        articleClient.quantité < 1 ||
-        articleClient.quantité > 100 ||
-        articleClient.quantité === undefined ||
+        articleClient.quantity < 1 ||
+        articleClient.quantity > 100 ||
+        articleClient.quantity === undefined ||
         articleClient.couleur === "" ||
         articleClient.couleur === undefined
     ) {
         alert("Pour valider le choix de cet article, veuillez renseigner une couleur, et/ou une quantité valide entre 1 et 100");
-
+        console.log("click refus");
     } else {
-        getBasket()
-        
-        document.querySelector("addToCard").style.colors = "rgb(52,168,83)";
-        document.querySelector("addToCard").textContent = "Produit ajouté";
 
+        addBasket(articleClient, articleClient.quantity);
 
+        //getBasket();
+
+        console.log("click ok");
+
+        document.querySelector("#addToCart").style.colors = "rgb(52,168,83)";
+        document.querySelector("#addToCart").textContent = "Produit ajouté";
     }
 });
-
-*/
-
-
-
-/*
-
 // gestion local storage
 
 function saveBasket(basket) {
@@ -108,9 +120,9 @@ function getBasket() {
 
 function addBasket(product, quantity) {
     let basket = getBasket();
-    let foundProduct = basket.find(p => p.id == product.id);
+    let foundProduct = basket.find(p => p._id == product._id);
     if (foundProduct != undefined) {
-        foundProduct.quantity = foundProduct.quantity + quantity;
+        foundProduct.quantity += quantity;
 
     } else {
         product.quantity = quantity;
@@ -118,10 +130,4 @@ function addBasket(product, quantity) {
     }
 
     saveBasket(basket);
-
 }
-
-*/
-
-
-
