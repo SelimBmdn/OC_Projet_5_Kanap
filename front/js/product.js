@@ -52,6 +52,18 @@ function lesKanaps(product) {
 
 // ajout dans panier choix quantité et couleur
 
+let choixCouleur = document.querySelector("#colors");
+
+choixCouleur.addEventListener("input", (ec) => {
+    let couleurProduit;
+    couleurProduit = ec.target.value;
+    // on ajoute la couleur à l'objet panierClient
+    articleClient.couleur = couleurProduit;
+    document.querySelector("#addToCart").style.color = "white";
+    document.querySelector("#addToCart").textContent = "Ajouter au panier";
+    console.log(couleurProduit);
+});
+
 let choixQuantité = document.querySelector('input[id="quantity"]');
 let quantitéProduit;
 
@@ -63,20 +75,6 @@ choixQuantité.addEventListener("input", (eq) => {
     document.querySelector("#addToCart").textContent = "Ajouter au panier";
     console.log(quantitéProduit);
 })
-
-let choixCouleur = document.querySelector("#colors");
-
-choixCouleur.addEventListener("input", (ec) => {
-    let couleurProduit;
-    // on récupère la valeur de la cible de l'évenement dans couleur
-    couleurProduit = ec.target.value;
-    // on ajoute la couleur à l'objet panierClient
-    articleClient.couleur = couleurProduit;
-    //ça reset la couleur et le texte du bouton si il y a une action sur les inputs dans le cas d'une autre commande du même produit
-    document.querySelector("#addToCart").style.color = "white";
-    document.querySelector("#addToCart").textContent = "Ajouter au panier";
-    console.log(couleurProduit);
-});
 
 let choixProduit = document.querySelector("#addToCart");
 
@@ -103,6 +101,7 @@ choixProduit.addEventListener("click", () => {
         document.querySelector("#addToCart").textContent = "Produit ajouté";
     }
 });
+
 // gestion local storage
 
 function saveBasket(basket) {
@@ -122,7 +121,7 @@ function addBasket(product, quantity) {
     let basket = getBasket();
     let foundProduct = basket.find(p => p._id == product._id);
     if (foundProduct != undefined) {
-        foundProduct.quantity += quantity;
+        foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity) ;
 
     } else {
         product.quantity = quantity;
