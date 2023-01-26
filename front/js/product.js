@@ -71,7 +71,7 @@ choixQuantité.addEventListener("input", (eq) => {
 
     quantitéProduit = eq.target.value;
     articleClient.quantity = quantitéProduit;
-    document.querySelector("#addToCart").style.colors = "white";
+    document.querySelector("#addToCart").style.color = "white";
     document.querySelector("#addToCart").textContent = "Ajouter au panier";
     console.log(quantitéProduit);
 })
@@ -91,13 +91,13 @@ choixProduit.addEventListener("click", () => {
         console.log("click refus");
     } else {
 
-        addBasket(articleClient, articleClient.quantity);
+        addBasket(articleClient, articleClient.quantity );
 
         //getBasket();
 
         console.log("click ok");
 
-        document.querySelector("#addToCart").style.colors = "rgb(52,168,83)";
+        document.querySelector("#addToCart").style.color = "rgb(52,168,83)";
         document.querySelector("#addToCart").textContent = "Produit ajouté";
     }
 });
@@ -121,9 +121,10 @@ function getBasket() {
   
   function addBasket(product, quantity) {
     let basket = getBasket();
-    let foundProduct = basket.find(p => p._id == product._id);
+    let foundProduct = basket.find(p => p._id == product._id );
     if (foundProduct != undefined) {
        foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity) ;
+    
       /*foundProduct.quantity++;*/
     } else {
         product.quantity = quantity;
