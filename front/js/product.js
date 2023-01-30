@@ -124,7 +124,7 @@ function getBasket() {
     let foundProduct = basket.find(p => p._id == product._id );
     if (foundProduct != undefined) {
        foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity) ;
-    
+    // A REVOIR CAR LORSQU'ON CHANGE DE COULEUR IL N'Y A PAS DE NOUVEAU PRODUIT AJOUTER 
       /*foundProduct.quantity++;*/
     } else {
         product.quantity = quantity;

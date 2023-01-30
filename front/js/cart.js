@@ -81,58 +81,11 @@ function affiche(indexé) {
 
   // reste à l'écoute des modifications de quantité pour l'affichage et actualiser les données
   totalProduit();
-  /* suppression();*/
+  /*
   getNumberProduct();
-  getTotalPrice();
+  getTotalPrice();*/
 
 }
-
-// modif quantité exemple correction
-/*
-function modifQuantité() {
-  const cart = document.querySelectorAll(".cart__item");
-   manière de regarder ce que l'on a d'affiché dynamiquement grace au dataset
-   cart.forEach((cart) => {console.log("item panier en dataset: " + " " + cart.dataset.id + " " + cart.dataset.couleur + " " + cart.dataset.quantité); }); 
-  // On écoute ce qu'il se passe dans itemQuantity de l'article concerné
-  cart.forEach((cart) => {
-    cart.addEventListener("change", (eq) => {
-      // vérification d'information de la valeur du clic et son positionnement dans les articles
-      let basket = JSON.parse(localStorage.getItem("basket"));
-      // boucle pour modifier la quantité du produit du panier grace à la nouvelle valeur
-      for (article of basket)
-        if (
-          article._id === cart.dataset.id &&
-          cart.dataset.couleur === article.couleur
-        ) {
-          article.quantity = eq.target.value;
-          localStorage.basket = JSON.stringify(basket);
-          // on met à jour le dataset quantité
-          cart.dataset.quantity = eq.target.value;
-          // on joue la fonction pour actualiser les données
-          totalProduit();
-          
-        }
-    });
-  });
-}
-*/
-
-
-
-// click sur bouton supprimer 
-
-
-// Total produit et cout total
-/*
-let prixTotalCalcul = [];
-
-for (let m = 0; m < basket.length; m++){
-  console.log(basket[m].prix);
-}
-
-
-*/
-
 
 
 // gestion local storage
@@ -175,16 +128,6 @@ function removeFromBasket(product) {
   saveBasket(basket);
 
 };
-/*
- document.getElementsByClassName("deleteItem").addEventListener("click",function(){
-  alert ('deleteItem');
-})
-;
-
-*/
-
-
-
 
 /*
 let btnDelete = document.querySelectorAll (".cart__item .deleteItem");
@@ -238,6 +181,40 @@ function changeQuantity(product, quantity) {
   }
 };
 
+
+// modif quantité exemple correction
+/*
+function modifQuantité() {
+  const cart = document.querySelectorAll(".cart__item");
+   manière de regarder ce que l'on a d'affiché dynamiquement grace au dataset
+   cart.forEach((cart) => {console.log("item panier en dataset: " + " " + cart.dataset.id + " " + cart.dataset.couleur + " " + cart.dataset.quantité); }); 
+  // On écoute ce qu'il se passe dans itemQuantity de l'article concerné
+  cart.forEach((cart) => {
+    cart.addEventListener("change", (eq) => {
+      // vérification d'information de la valeur du clic et son positionnement dans les articles
+      let basket = JSON.parse(localStorage.getItem("basket"));
+      // boucle pour modifier la quantité du produit du panier grace à la nouvelle valeur
+      for (article of basket)
+        if (
+          article._id === cart.dataset.id &&
+          cart.dataset.couleur === article.couleur
+        ) {
+          article.quantity = eq.target.value;
+          localStorage.basket = JSON.stringify(basket);
+          // on met à jour le dataset quantité
+          cart.dataset.quantity = eq.target.value;
+          // on joue la fonction pour actualiser les données
+          totalProduit();
+          
+        }
+    });
+  });
+}
+*/
+
+
+
+/*
 function getNumberProduct() {
   let basket = getBasket()
   let number = 0;
@@ -245,8 +222,6 @@ function getNumberProduct() {
     number += product.quantity;
   }
   return number;
-
-
 };
 
 
@@ -258,21 +233,33 @@ function getTotalPrice() {
   }
   return total;
 };
+*/
 
+// Total produit et prix
 
+function totalProduit() {
+  let totalArticle = 0;
+  let totalPrix = 0;
+  const cart = document.querySelectorAll(".cart__item");
+  cart.forEach((cart) => {
+    //je récupère les quantités des produits grâce au dataset
+    totalArticle += JSON.parse(cart.dataset.quantité);
+    // je créais un opérateur pour le total produit grâce au dataset
+    totalPrix += cart.dataset.quantité * cart.dataset.prix;
+  });
+  document.getElementById("totalQuantity").textContent = totalArticle;
+  document.getElementById("totalPrice").textContent = totalPrix;
+}
+
+//--------------------------------------------------------
 // gestion formulaire 
 
-//const cart = document.querySelectorAll(".cart__item");
 
 // les données du client seront stockées dans ce tableau pour la commande sur page panier
 if (page.match("cart")) {
   var contactClient = {};
   localStorage.contactClient = JSON.stringify(contactClient);
-  // voir https://cheatography.com/davechild/cheat-sheets/regular-expressions/
-  /* regex email stackoverflow (?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\]) */
-  /* équivalent en javascript à  	
-  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/ */
-  // équivalent pour w3c /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+  
   // on pointe des éléments input, on attribut à certains la même classe, ils régiront pareil aux différantes regex
   // on pointe les input nom prénom et ville
   var prenom = document.querySelector("#firstName");
@@ -493,9 +480,8 @@ if (panier && panier.length > 0) {
   document.querySelector("#order").setAttribute("value", "Panier vide!");
 }
 }
-//----------------------------------------------------------------
+
 // fonction récupération des donnée client et panier avant transformation
-//----------------------------------------------------------------
 let contactRef;
 let commandeFinale;
 function paquet() {
