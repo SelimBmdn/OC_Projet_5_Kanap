@@ -47,6 +47,7 @@ function affichageBasket(index) {
   // reste à l'écoute grâce aux fonctions suivantes pour modifier l'affichage
   changeQuantity();
   removeFromBasket();
+  //modifQuantité();
 }
 
 
@@ -109,7 +110,7 @@ function addBasket(product, quantity) {
   let foundProduct = basket.find(p => p._id == product._id);
   if (foundProduct != undefined) {
     foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity);
-
+// A REVOIR CAR LORSQU'ON CHANGE DE COULEUR IL N'Y A PAS DE NOUVEAU PRODUIT AJOUTER
   } else {
     product.quantity = quantity;
     basket.push(product);
@@ -119,52 +120,41 @@ function addBasket(product, quantity) {
 
 };
 
-// supprimer produit du panier
-
+// supprimer produit du panier au click
 
 function removeFromBasket(product) {
   let basket = getBasket();
-  basket = basket.filter(p => p._id != product._id);
+  basket = basket.filter(p => p._id != product._id && p.couleur != product.couleur);
   saveBasket(basket);
-
 };
 
-/*
-let btnDelete = document.querySelectorAll (".cart__item .deleteItem");
-btnDelete.forEach((btnDelete) => {
-  btnDelete.addEventListener("click" , () => {
-    let panier = JSON.parse(localStorage.getItem("basket"));
-    for (let d = 0, c panier.length; d < c; d++)
-    if (
-      basket[d]._id === btnDelete.dataset.id &&
-      basket[d].couleur === btnDelete.dataset.couleur
-    ) {
-      const num [d] ;
-      let newBasket = JSON.parse(localStorage.getItem("basket"));
-      newBasket.splice(num, 1);
+function supprimerDuPanier(productId, productColor) {
+  let basket = getBasket();
+  basket = basket.filter(p => p._id != productId && p.couleur != productColor);
+  saveBasket(basket);
+};
 
-      if (newBasket && newBasket.length == 0) {
-        document.querySelector("totalQuantity").innerHTML = "0" ;
-        document.querySelector("totalPrice").innerHTML = "0" ;
-        document.querySelector("h1").innerHTML = "Panier vide" ;
+let btnDelete = document.querySelector(".deleteItem");
 
-      }
-      localStorage.basket = JSON.stringify(newBasket);
-      totalProduit();
-
-      return location.reload();
-    }
-
-  });
-
-});
-/*basket = basket.filter(p => p._id != product._id);
-saveBasket(basket);
-  } 
+window.addEventListener("click", function(e){
   
+  if (e.target.getAttribute("class") == "deleteItem") {
+    console.log("btndelete");
+    console.log(e.target);
+    console.log(e.target.getAttribute("data-id"));
+    console.log(e.target.getAttribute("data-couleur"));
+
+    let productColor = e.target.getAttribute("data-couleur");
+    let productId = e.target.getAttribute("data-id");
+
+    supprimerDuPanier(productId, productColor);
+  }
   
-  ;
-*/
+}) ;
+
+// changer quantité au click 
+
+
 
 
 function changeQuantity(product, quantity) {
@@ -186,23 +176,23 @@ function changeQuantity(product, quantity) {
 /*
 function modifQuantité() {
   const cart = document.querySelectorAll(".cart__item");
-   manière de regarder ce que l'on a d'affiché dynamiquement grace au dataset
-   cart.forEach((cart) => {console.log("item panier en dataset: " + " " + cart.dataset.id + " " + cart.dataset.couleur + " " + cart.dataset.quantité); }); 
-  // On écoute ce qu'il se passe dans itemQuantity de l'article concerné
+   //manière de regarder ce que l'on a d'affiché dynamiquement grace au dataset
+   //cart.forEach((cart) => {console.log("item panier en dataset: " + " " + cart.dataset.id + " " + cart.dataset.couleur + " " + cart.dataset.quantité); }); 
+  // On écoute ce qu'il se passe dans itemQuantity de l'article concerné 
   cart.forEach((cart) => {
     cart.addEventListener("change", (eq) => {
       // vérification d'information de la valeur du clic et son positionnement dans les articles
-      let basket = JSON.parse(localStorage.getItem("basket"));
+      let panier = JSON.parse(localStorage.getItem("basket"));
       // boucle pour modifier la quantité du produit du panier grace à la nouvelle valeur
-      for (article of basket)
+      for (article of panier)
         if (
           article._id === cart.dataset.id &&
           cart.dataset.couleur === article.couleur
         ) {
-          article.quantity = eq.target.value;
-          localStorage.basket = JSON.stringify(basket);
+          article.quantité = eq.target.value;
+          localStorage.basket = JSON.stringify(panier);
           // on met à jour le dataset quantité
-          cart.dataset.quantity = eq.target.value;
+          cart.dataset.quantité = eq.target.value;
           // on joue la fonction pour actualiser les données
           totalProduit();
           
@@ -210,8 +200,8 @@ function modifQuantité() {
     });
   });
 }
-*/
 
+*/
 
 
 /*

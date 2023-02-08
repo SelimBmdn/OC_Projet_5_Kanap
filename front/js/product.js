@@ -91,10 +91,9 @@ choixProduit.addEventListener("click", () => {
         console.log("click refus");
     } else {
 
-        addBasket(articleClient, articleClient.quantity );
+        addBasket(articleClient, articleClient.quantity);
 
         //getBasket();
-
         console.log("click ok");
 
         document.querySelector("#addToCart").style.color = "rgb(52,168,83)";
@@ -117,62 +116,64 @@ function getBasket() {
     } else {
         return JSON.parse(basket);
     }
-  }
-  
-  function addBasket(product, quantity) {
+}
+;
+
+function addBasket(product, quantity) {
     let basket = getBasket();
-    let foundProduct = basket.find(p => p._id == product._id );
+    let foundProduct = basket.find(p => p._id == product._id && p.couleur == product.couleur);
+
     if (foundProduct != undefined) {
-       foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity) ;
-    // A REVOIR CAR LORSQU'ON CHANGE DE COULEUR IL N'Y A PAS DE NOUVEAU PRODUIT AJOUTER 
-      /*foundProduct.quantity++;*/
-    } else {
+            foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity);           
+        }
+     else {
+
         product.quantity = quantity;
         basket.push(product);
     }
-  
+
     saveBasket(basket);
 
-  }
+}
 
-  function removeFromBasket(product) {
+function removeFromBasket(product) {
     let basket = getBasket();
     basket = basket.filter(p => p._id != product._id);
     saveBasket(basket);
 
-  }
+}
 
-  function changeQuantity(product, quantity) {
+function changeQuantity(product, quantity) {
     let basket = getBasket();
     let foundProduct = basket.find(p => p._id == product._id);
     if (foundProduct != undefined) {
-      foundProduct.quantity += quantity;
-      if (foundProduct.quantity <=0) {
-        removeFromBasket(foundProduct);
-      } else {
-        saveBasket(basket);
-      }
-      
-    }
-  }
+        foundProduct.quantity += quantity;
+        if (foundProduct.quantity <= 0) {
+            removeFromBasket(foundProduct);
+        } else {
+            saveBasket(basket);
+        }
 
-  function getNumberProduct () {
+    }
+}
+
+function getNumberProduct() {
     let basket = getBasket()
     let number = 0;
     for (let product of basket) {
-      number += product.quantity;
+        number += product.quantity;
     }
     return number
-  }
-  
-  function getTotalPrice(){
+}
+
+function getTotalPrice() {
     let basket = getBasket();
     let total = 0;
     for (let product of basket) {
-      total += product.quantity * product.price;
+        total += product.quantity * product.price;
     }
     return total;
-  }
+}
 /*
 // gestion local storage
 
