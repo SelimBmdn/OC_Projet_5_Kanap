@@ -108,7 +108,6 @@ function saveBasket(basket) {
     localStorage.setItem("basket", JSON.stringify(basket));
 }
 
-
 function getBasket() {
     let basket = localStorage.getItem("basket");
     if (basket == null) {
@@ -122,18 +121,15 @@ function getBasket() {
 function addBasket(product, quantity) {
     let basket = getBasket();
     let foundProduct = basket.find(p => p._id == product._id && p.couleur == product.couleur);
-
     if (foundProduct != undefined) {
-            foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity);           
-        }
-     else {
+        foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity);
+    }
+    else {
 
         product.quantity = quantity;
         basket.push(product);
     }
-
     saveBasket(basket);
-
 }
 
 function removeFromBasket(product) {
@@ -174,32 +170,3 @@ function getTotalPrice() {
     }
     return total;
 }
-/*
-// gestion local storage
-
-function saveBasket(basket) {
-    localStorage.setItem("basket", JSON.stringify(basket));
-}
-
-function getBasket() {
-    let basket = localStorage.getItem("basket");
-    if (basket == null) {
-        return [];
-    } else {
-        return JSON.parse(basket);
-    }
-}
-
-function addBasket(product, quantity) {
-    let basket = getBasket();
-    let foundProduct = basket.find(p => p._id == product._id);
-    if (foundProduct != undefined) {
-        foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity) ;
-
-    } else {
-        product.quantity = quantity;
-        basket.push(product);
-    }
-
-    saveBasket(basket);
-}*/

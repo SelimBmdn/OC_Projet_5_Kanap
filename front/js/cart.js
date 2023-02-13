@@ -46,8 +46,9 @@ function affichageBasket(index) {
   }
   // reste à l'écoute grâce aux fonctions suivantes pour modifier l'affichage
   changeQuantity();
-  removeFromBasket();
-  //modifQuantité();
+  /*removeFromBasket();*/
+  supprimerDuPanier();
+  modifQuantité();
 }
 
 
@@ -82,9 +83,6 @@ function affiche(indexé) {
 
   // reste à l'écoute des modifications de quantité pour l'affichage et actualiser les données
   totalProduit();
-  /*
-  getNumberProduct();
-  getTotalPrice();*/
 
 }
 
@@ -94,7 +92,6 @@ function affiche(indexé) {
 function saveBasket(basket) {
   localStorage.setItem("basket", JSON.stringify(basket));
 };
-
 
 function getBasket() {
   let basket = localStorage.getItem("basket");
@@ -107,27 +104,28 @@ function getBasket() {
 
 function addBasket(product, quantity) {
   let basket = getBasket();
-  let foundProduct = basket.find(p => p._id == product._id);
+  let foundProduct = basket.find(p => p._id == product._id && p.couleur == product.couleur);
+
   if (foundProduct != undefined) {
     foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity);
-// A REVOIR CAR LORSQU'ON CHANGE DE COULEUR IL N'Y A PAS DE NOUVEAU PRODUIT AJOUTER
-  } else {
+  }
+  else {
     product.quantity = quantity;
     basket.push(product);
   }
 
   saveBasket(basket);
 
-};
+}
 
 // supprimer produit du panier au click
-
+/*
 function removeFromBasket(product) {
   let basket = getBasket();
   basket = basket.filter(p => p._id != product._id && p.couleur != product.couleur);
   saveBasket(basket);
 };
-
+*/
 function supprimerDuPanier(productId, productColor) {
   let basket = getBasket();
   basket = basket.filter(p => p._id != productId && p.couleur != productColor);
@@ -135,9 +133,8 @@ function supprimerDuPanier(productId, productColor) {
 };
 
 let btnDelete = document.querySelector(".deleteItem");
+window.addEventListener("click", function (e) {
 
-window.addEventListener("click", function(e){
-  
   if (e.target.getAttribute("class") == "deleteItem") {
     console.log("btndelete");
     console.log(e.target);
@@ -148,20 +145,20 @@ window.addEventListener("click", function(e){
     let productId = e.target.getAttribute("data-id");
 
     supprimerDuPanier(productId, productColor);
+    location.reload();
+
   }
-  
-}) ;
+});
 
-// changer quantité au click 
-
-
-
+// changer quantité au click dans panier , EN COURS DE MODIF .. ------------
 
 function changeQuantity(product, quantity) {
+
   let basket = getBasket();
   let foundProduct = basket.find(p => p._id == product._id);
   if (foundProduct != undefined) {
     foundProduct.quantity = parseInt(quantity) + parseInt(foundProduct.quantity);
+    //foundProduct.quantity = foundProduct++ ;
     if (foundProduct.quantity <= 0) {
       removeFromBasket(foundProduct);
     } else {
@@ -170,60 +167,21 @@ function changeQuantity(product, quantity) {
 
   }
 };
-
-
-// modif quantité exemple correction
 /*
-function modifQuantité() {
-  const cart = document.querySelectorAll(".cart__item");
-   //manière de regarder ce que l'on a d'affiché dynamiquement grace au dataset
-   //cart.forEach((cart) => {console.log("item panier en dataset: " + " " + cart.dataset.id + " " + cart.dataset.couleur + " " + cart.dataset.quantité); }); 
-  // On écoute ce qu'il se passe dans itemQuantity de l'article concerné 
-  cart.forEach((cart) => {
-    cart.addEventListener("change", (eq) => {
-      // vérification d'information de la valeur du clic et son positionnement dans les articles
-      let panier = JSON.parse(localStorage.getItem("basket"));
-      // boucle pour modifier la quantité du produit du panier grace à la nouvelle valeur
-      for (article of panier)
-        if (
-          article._id === cart.dataset.id &&
-          cart.dataset.couleur === article.couleur
-        ) {
-          article.quantité = eq.target.value;
-          localStorage.basket = JSON.stringify(panier);
-          // on met à jour le dataset quantité
-          cart.dataset.quantité = eq.target.value;
-          // on joue la fonction pour actualiser les données
-          totalProduit();
-          
-        }
-    });
-  });
-}
-
+document.getElementById("itemQuantity").addEventListener("click", function() {
+  changeQuantity(product, quantity);
+});
 */
+// element "itemQuantity" pointé
+window.addEventListener("click", function (e) {
 
-
-/*
-function getNumberProduct() {
-  let basket = getBasket()
-  let number = 0;
-  for (let product of basket) {
-    number += product.quantity;
+  if (e.target.getAttribute("class") == "itemQuantity") {
+    console.log("btnQuantity");
+    console.log(e.target);
   }
-  return number;
-};
 
+});
 
-function getTotalPrice() {
-  let basket = getBasket();
-  let total = 0;
-  for (let product of basket) {
-    total += product.quantity * product.prix;
-  }
-  return total;
-};
-*/
 
 // Total produit et prix
 
@@ -239,9 +197,11 @@ function totalProduit() {
   });
   document.getElementById("totalQuantity").textContent = totalArticle;
   document.getElementById("totalPrice").textContent = totalPrix;
-}
+};
 
-//--------------------------------------------------------
+
+
+
 // gestion formulaire 
 
 
@@ -249,7 +209,7 @@ function totalProduit() {
 if (page.match("cart")) {
   var contactClient = {};
   localStorage.contactClient = JSON.stringify(contactClient);
-  
+
   // on pointe des éléments input, on attribut à certains la même classe, ils régiront pareil aux différantes regex
   // on pointe les input nom prénom et ville
   var prenom = document.querySelector("#firstName");
@@ -369,7 +329,7 @@ if (page.match("cart")) {
       document.querySelector("#emailErrorMsg").textContent = "Veuillez renseigner votre email.";
       document.querySelector("#emailErrorMsg").style.color = "white";
       // si valeur n'est plus un string vide et la regex différante de 0 (regex à -1 et le champ n'est pas vide donc il y a une erreur)
-    } else if ( regValide !== 0) {
+    } else if (regValide !== 0) {
       document.querySelector("#emailErrorMsg").innerHTML = "Caractère non valide";
       document.querySelector("#emailErrorMsg").style.color = "white";
       // pour le reste des cas (quand la regex ne décèle aucune erreur et est à 0 peu importe le champ vu qu'il est validé par la regex)
@@ -403,12 +363,12 @@ function couleurRegex(regSearch, valeurEcoute, inputAction) {
 }
 // fonction d'affichage individuel des paragraphes sous input sauf pour l'input email
 function texteInfo(regex, pointage, zoneEcoute) {
-      if (page.match("cart")) {
-      zoneEcoute.addEventListener("input", (e) => {
+  if (page.match("cart")) {
+    zoneEcoute.addEventListener("input", (e) => {
       // valeur sera la valeur de l'input en dynamique
       valeur = e.target.value;
       index = valeur.search(regex);
-    // si valeur est toujours un string vide et la regex différante de 0 (regex à -1 et le champ est vide mais pas d'erreur)
+      // si valeur est toujours un string vide et la regex différante de 0 (regex à -1 et le champ est vide mais pas d'erreur)
       if (valeur === "" && index != 0) {
         document.querySelector(pointage).textContent = "Veuillez renseigner ce champ.";
         document.querySelector(pointage).style.color = "white";
@@ -418,8 +378,8 @@ function texteInfo(regex, pointage, zoneEcoute) {
         document.querySelector(pointage).style.color = "white";
         // pour le reste des cas (quand la regex ne décèle aucune erreur et est à 0 peu importe le champ vu qu'il est validé par la regex)
       } else {
-      document.querySelector(pointage).innerHTML = "Caratères acceptés pour ce champ.";
-      document.querySelector(pointage).style.color = "white";
+        document.querySelector(pointage).innerHTML = "Caratères acceptés pour ce champ.";
+        document.querySelector(pointage).style.color = "white";
       }
     });
   }
@@ -455,20 +415,20 @@ if (page.match("cart")) {
 //----------------------------------------------------------------
 // fonction récupérations des id puis mis dans un tableau
 //----------------------------------------------------------------
-// définition du panier quine comportera que les id des produits choisi du local storage
+// définition du panier qui comportera que les id des produits choisi du local storage
 let panierId = [];
 function tableauId() {
-// appel des ressources
-let panier = JSON.parse(localStorage.getItem("basket"));
-// récupération des id produit dans panierId
-if (panier && panier.length > 0) {
-  for (let indice of panier) {
-    panierId.push(indice._id);
+  // appel des ressources
+  let panier = JSON.parse(localStorage.getItem("basket"));
+  // récupération des id produit dans panierId
+  if (panier && panier.length > 0) {
+    for (let indice of panier) {
+      panierId.push(indice._id);
+    }
+  } else {
+    console.log("le panier est vide");
+    document.querySelector("#order").setAttribute("value", "Panier vide!");
   }
-} else {
-  console.log("le panier est vide");
-  document.querySelector("#order").setAttribute("value", "Panier vide!");
-}
 }
 
 // fonction récupération des donnée client et panier avant transformation
