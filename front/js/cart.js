@@ -46,7 +46,6 @@ function affichageBasket(index) {
   }
   // reste à l'écoute grâce aux fonctions suivantes pour modifier l'affichage
   changeQuantity();
-  /*removeFromBasket();*/
   supprimerDuPanier();
   modifQuantité();
 }
@@ -85,8 +84,6 @@ function affiche(indexé) {
   totalProduit();
 
 }
-
-
 // gestion local storage
 
 function saveBasket(basket) {
@@ -119,13 +116,7 @@ function addBasket(product, quantity) {
 }
 
 // supprimer produit du panier au click
-/*
-function removeFromBasket(product) {
-  let basket = getBasket();
-  basket = basket.filter(p => p._id != product._id && p.couleur != product.couleur);
-  saveBasket(basket);
-};
-*/
+
 function supprimerDuPanier(productId, productColor) {
   let basket = getBasket();
   basket = basket.filter(p => p._id != productId && p.couleur != productColor);
@@ -150,8 +141,8 @@ window.addEventListener("click", function (e) {
   }
 });
 
-// changer quantité au click dans panier , EN COURS DE MODIF .. ------------
-
+// changer quantité au click dans panier , EN COURS DE MODIF ... -------------------------------
+/*
 function changeQuantity(product, quantity) {
 
   let basket = getBasket();
@@ -164,9 +155,8 @@ function changeQuantity(product, quantity) {
     } else {
       saveBasket(basket);
     }
-
   }
-};
+}; */
 /*
 document.getElementById("itemQuantity").addEventListener("click", function() {
   changeQuantity(product, quantity);
@@ -174,7 +164,6 @@ document.getElementById("itemQuantity").addEventListener("click", function() {
 */
 // element "itemQuantity" pointé
 window.addEventListener("click", function (e) {
-
   if (e.target.getAttribute("class") == "itemQuantity") {
     console.log("btnQuantity");
     console.log(e.target);
@@ -183,8 +172,8 @@ window.addEventListener("click", function (e) {
 });
 
 
-// Total produit et prix
 
+// Total produit et prix
 function totalProduit() {
   let totalArticle = 0;
   let totalPrix = 0;
@@ -200,10 +189,7 @@ function totalProduit() {
 };
 
 
-
-
 // gestion formulaire 
-
 
 // les données du client seront stockées dans ce tableau pour la commande sur page panier
 if (page.match("cart")) {
@@ -293,7 +279,7 @@ if (page.match("cart")) {
     valideClic();
   });
 }
-//------------------------------------
+
 // le champ écouté via la regex regexChiffreLettre fera réagir, grâce à texteInfo, la zone concernée
 texteInfo(regexChiffreLettre, "#addressErrorMsg", adresse);
 // Ecoute et attribution de point(pour sécurité du clic) si ce champ est ok d'après les regex
@@ -360,7 +346,7 @@ function couleurRegex(regSearch, valeurEcoute, inputAction) {
     inputAction.style.backgroundColor = "rgb(0, 138, 0)";
     inputAction.style.color = "white";
   }
-}
+} 
 // fonction d'affichage individuel des paragraphes sous input sauf pour l'input email
 function texteInfo(regex, pointage, zoneEcoute) {
   if (page.match("cart")) {
@@ -414,7 +400,7 @@ if (page.match("cart")) {
 }
 //----------------------------------------------------------------
 // fonction récupérations des id puis mis dans un tableau
-//----------------------------------------------------------------
+
 // définition du panier qui comportera que les id des produits choisi du local storage
 let panierId = [];
 function tableauId() {
@@ -450,7 +436,7 @@ function paquet() {
 }
 //----------------------------------------------------------------
 // fonction sur la validation de l'envoi
-//----------------------------------------------------------------
+
 function envoiPaquet() {
   tableauId();
   paquet();
@@ -481,7 +467,7 @@ function envoiPaquet() {
 }
 //------------------------------------------------------------
 // fonction affichage autoinvoquée du numéro de commande et vide du storage lorsque l'on est sur la page confirmation
-//------------------------------------------------------------
+
 (function Commande() {
   if (page.match("confirmation")) {
     sessionStorage.clear();
