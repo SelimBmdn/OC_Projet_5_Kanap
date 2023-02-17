@@ -93,7 +93,6 @@ choixProduit.addEventListener("click", () => {
 
         addBasket(articleClient, articleClient.quantity);
 
-        //getBasket();
         console.log("click ok");
 
         document.querySelector("#addToCart").style.color = "rgb(52,168,83)";
@@ -115,9 +114,7 @@ function getBasket() {
     } else {
         return JSON.parse(basket);
     }
-}
-;
-
+};
 function addBasket(product, quantity) {
     let basket = getBasket();
     let foundProduct = basket.find(p => p._id == product._id && p.couleur == product.couleur);
@@ -130,20 +127,6 @@ function addBasket(product, quantity) {
         basket.push(product);
     }
     saveBasket(basket);
-}
-
-function changeQuantity(product, quantity) {
-    let basket = getBasket();
-    let foundProduct = basket.find(p => p._id == product._id);
-    if (foundProduct != undefined) {
-        foundProduct.quantity += quantity;
-        if (foundProduct.quantity <= 0) {
-            removeFromBasket(foundProduct);
-        } else {
-            saveBasket(basket);
-        }
-
-    }
 }
 
 
